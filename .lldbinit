@@ -1,0 +1,3 @@
+# Closing the Simulator (or swiping the app away) sends SIGTERM.
+# That's a normal shutdown, so don't let the debugger pause on it.
+process handle SIGTERM --stop false --pass true --notify false
