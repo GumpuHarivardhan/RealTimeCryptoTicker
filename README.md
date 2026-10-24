@@ -27,8 +27,8 @@ CryptoTicker/
 ├── ViewModels/
 │   └── TickerViewModel.swift    The list of coins + "connected?" flag
 └── Views/
-    ├── TickerListView.swift     The screen with the list
-    └── TickerRowView.swift      One row + the flash animation
+    ├── TickerListView.swift     The Markets screen + Live badge
+    └── TickerRowView.swift      One coin card + the flash animation
 ```
 
 ## How the data moves
@@ -107,7 +107,7 @@ There's one more small saving: `Coin.update` returns early if nothing changed, s
 The row has its own `@State var isFlashing` and uses `.task(id:)`:
 
 ```swift
-.listRowBackground(flashColor.opacity(isFlashing ? 0.3 : 0))
+.overlay { card.fill(flashColor.opacity(isFlashing ? 0.16 : 0)) }
 .task(id: coin.flashCount) {
     isFlashing = true                              // show the colour
     try await Task.sleep(for: .milliseconds(300))  // keep it briefly
@@ -138,7 +138,7 @@ repeat until stopped:
 
 - The wait **doubles** after each failure, so the app doesn't flood the server or drain the battery while offline.
 - After a successful connection, the wait **resets to 1 second**.
-- The badge in the top-right shows **Live** or **Reconnecting…**.
+- The pill in the top-right shows **Live** (pulsing green) or **Reconnecting…** (orange).
 
 ## 5. Memory management: no retain cycles
 
